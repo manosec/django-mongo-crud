@@ -1,0 +1,64 @@
+{%extends 'base.html'%}
+
+{%block title%}
+Index
+{% endblock %}
+
+{%block content%}
+<form method="POST", action="{% url 'crud_uri' %}">
+    {% csrf_token %}
+    
+    <table>
+    {% if not update %}
+        <label for="name">Name:</label>
+        <input name="name" value="" type="text"/>
+        <label for="score">Score:</label>
+        <input name="score" value="" type="number" min="0" max="100"/>
+        <br>
+        <button name="save">save</button>
+    {% else %}
+        <label for="name">Name:</label>
+        <input name="name" value={{update.name}} type="text"/>
+        <label for="score">Score:</label>
+        <input name="score" value={{update.score}} type="number" min="0" max="100"/>
+        <br>
+        <button name="save" value="{{update.id}}">save</button>
+    {% endif %}
+   
+    <br><br>
+    
+        <thead >    
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Score
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for record in records%}
+        
+            <tr>
+                <td>
+                    {{record.name}}
+                </td>
+                <td>
+                    {{record.score}}
+                </td>
+                <td>
+                    <button name="edit" value={{record.id}}>
+                        Edit
+                    </button>
+                    <button name="delete" value="{{record.id}}">
+                        Delete
+                    </button>
+                    
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</form>
+{%endblock%}
